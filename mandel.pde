@@ -1,60 +1,111 @@
 
-void setup(){
-size(1200, 1000);
-}
-float zoom = 1;
-float a = 0.005;
-float b = 2;
-int x = 900;
-int y = 500;
-int func(double x, double y, double newx, double newy){
-  int escape = 1;
-  double abs = Math.pow(x, 2) + Math.pow(y, 2);
-  while(abs<4 && escape<256){
-    double temp = newx;
-    newx = x+(Math.pow(newx, 2)-Math.pow(newy, 2));
-    newy = y+(2*temp*newy);
-    abs = Math.pow(newx, 2) + Math.pow(newy, 2);
-    escape++;
-  }
-  return escape;
-}
-void draw(){
-scale(zoom);
-translate(x, y);
-for(float i = -2; i<=2; i+=0.002){
-  for(float j = -2; j<=2; j+=0.002){
-    noStroke();
-    if(func(i, j, i, j) <256){
-     fill(func(i, j, i, j), 
-     func(i, j, i, j)*Math.abs(j*i*30), 256-func(i, j, i, j));
-    }
-    else{
-      fill(0);
-    }
-    rect(i*450, j*450, b, b);
-  }
-}
-if(mousePressed){
-  zoom+=1;
-  //a/=1.5;
-  //b/=1.5;
-}
-if(keyPressed){
-  if(key == CODED){
-    if(keyCode == LEFT){
-      x+=10;
-    }
-    else if(keyCode == RIGHT){
-      x-=10;
-    }
-    else if(keyCode == DOWN){
-      y-=10;
-    }
-    else if(keyCode == UP){
-      y+=10;
-    }
-  }
+int cellSize = 10;
+World world;
+
+
+void setup() {
+  size(1600, 1600);
+  world = new World(width/cellSize, height/cellSize);
+  frameRate(60);
+
 }
 
+void draw() {
+  background(256);
+  world.show();
+  world.update();
+}
+
+class World {
+  private Shape[][] cells;
+  
+  public World(int rows, int cols) {
+    cells = new Shape[rows][cols];
+    for(int i = 0; i<cells.length; i++){
+      for(int j = 0; j<cells[i].length; j++){
+        cells[i][j] = new Shape();
+        cells[i][j].kill();
+      }
+    }
+    for(int i = 5; i<20; i++){
+      for(int j = 10; j<20; j++){
+      cells[i][j].revive();
+      }
+    }
+   
+  }
+  
+  public void show() {
+    // TODO 2: run the following code on all the cells
+    //       that are not null
+     for(int i = 0; i<cells.length; i++){
+      for(int j = 0; j<cells[i].length; j++){
+        if(cells[i][j]!=null){
+          pushMatrix();
+          translate(i*cellSize, j*cellSize);
+          cells[i][j].show();
+          popMatrix();
+          }
+      }
+    }
+
+  }
+  public void update(){
+    for(int i = 1; i<cells.length-1; i++){
+      for(int j = 1; j<cells[i].length-1; j++){
+        int countalive = 0;
+        if(cells[i][j]!=null){
+          Shape[] s = {cells[i-1][j-1], cells[i-1][j], cells[i-1][j+1], cells[i][j-1], cells[i][j+1], cells[i+1][j-1], cells[i+1][j], cells[i+1][j+1]};
+          if(cells[i][j].getType() == 1){
+            for(int x = 0; x<s.length; x++){
+              if(s[x].getType() == 1){
+                countalive++;
+              }
+            }
+            if(countalive<2 || countalive>3){
+              cells[i][j].kill();
+            }
+          }
+          
+          if(cells[i][j].getType() == 0){
+            for(int x = 0; x<s.length; x++){
+              if(s[x].getType() == 1){
+                countalive++;
+              }
+            }
+            if(countalive==3){
+              cells[i][j].revive();
+            }
+          }
+          }
+  }
+}
+  }
+
+class Shape {
+  private int type;
+
+  public Shape() {
+    type = (int)(Math.random() * 2);
+  }
+  public int getType(){
+    return type;
+  }
+  public void kill(){
+    type = 0;
+  }
+  public void revive(){
+    type = 1;
+  }
+  
+  public void show() {
+    noStroke();
+    if (type == 0) {
+      fill(0);
+    } else if (type == 1) {
+      fill(0, 0, 255);
+    }
+    rect(2, 2, cellSize-4, cellSize-4);
+  }
+}
 }

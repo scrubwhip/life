@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 	<head>
 		<meta charset="utf-8">
-		<title>Bubbles</title>
+		<title>Mandelbrot</title>
 		<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="styles.css">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.min.js"></script>
@@ -10,10 +10,10 @@
 	<body>
    		<h1>Bubble Generator!</h1>
 		<div class="content">
-			<canvas class="panel" data-processing-sources="birb.pde"></canvas>
+			<canvas class="panel" data-processing-sources="mandel.pde"></canvas>
 		</div>
 	    	<div class="footer">
-			Click for bubbles//space to switch colors.
+			Visual representation of escape time (iterations before absolute value f(z) > 2) of f(z) = z^2+c for c = real number x + imaginary number y for -2<x<2 and -2<y<2.
 	    	</div>
 	</body>
 </html>

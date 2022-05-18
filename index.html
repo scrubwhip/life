@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 	<head>
 		<meta charset="utf-8">
-		<title>Mandelbrot</title>
+		<title>John Conway's Game of Life</title>
 		<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="styles.css">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.min.js"></script>
 		
 	</head>
 	<body>
-   		<h1>Mandelbrot Set (wait ~10 seconds)</h1>
+   		<h1>John Conway's Game of Life (click+drag and press space)</h1>
 		<div class="content">
 			<canvas class="panel" data-processing-sources="mandel.pde"></canvas>
 		</div>
 	    	<div class="footer">
-			Visual representation of escape time (iterations before absolute value f(z) > 2) of f(z) = z^2+c for c = real number x + imaginary number y for -2<x<2 and -2<y<2.
+			Live cell with > 3 or < 2 live neighbors dies, dead cell with 3 neighbors is revived. 
 	    	</div>
 	</body>
 </html>

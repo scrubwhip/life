@@ -1,10 +1,10 @@
 
 void setup(){
-size(1800, 1000);
+size(1200, 1000);
 }
 float zoom = 1;
 float a = 0.005;
-float b = 1;
+float b = 2;
 int x = 900;
 int y = 500;
 int func(double x, double y, double newx, double newy){
@@ -22,8 +22,8 @@ int func(double x, double y, double newx, double newy){
 void draw(){
 scale(zoom);
 translate(x, y);
-for(float i = -2; i<=2; i+=0.001){
-  for(float j = -2; j<=2; j+=0.001){
+for(float i = -2; i<=2; i+=0.002){
+  for(float j = -2; j<=2; j+=0.002){
     noStroke();
     if(func(i, j, i, j) <256){
      fill(func(i, j, i, j), 

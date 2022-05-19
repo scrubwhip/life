@@ -6,86 +6,20 @@ void setup() {
   frameRate(60);
 }
 void draw() {
-  background(0);
+  background(256);
   world.show();
-  if(keyPressed){
-  world.update();
-  }
 }
-class World {
-  private Shape[][] cells;
-  public World(int rows, int cols) {
-    cells = new Shape[rows][cols];
-    for(int i = 0; i<cells.length; i++){
-      for(int j = 0; j<cells[i].length; j++){
-        cells[i][j] = new Shape();
-        cells[i][j].kill();
-      }
-    }
-  }
-  public void show() {
-    for(int i = 0; i<cells.length; i++){
-      for(int j = 0; j<cells[i].length; j++){
-        if(cells[i][j]!=null){
-          pushMatrix();
-          translate(i*cellSize, j*cellSize);
-          cells[i][j].show();
-          popMatrix();
-          }
-      }
-    }
-  if(mousePressed){
+
+void mousePressed(){
   int i = mouseX/cellSize;
   int j = mouseY/cellSize;
-  cells[i][j].revive();
+  world.getCells()[i][j].revive();
   }
-  }
-  public void update(){
-    for(int i = 1; i<cells.length-1; i++){
-      for(int j = 1; j<cells[i].length-1; j++){
-        int countalive = 0;
-        if(cells[i][j]!=null){
-          Shape[] s = {cells[i-1][j-1], cells[i-1][j], cells[i-1][j+1], cells[i][j-1], cells[i][j+1], cells[i+1][j-1], cells[i+1][j], cells[i+1][j+1]};
-          if(cells[i][j].getType() == 1){
-            for(int x = 0; x<8; x++){
-              if(s[x].getType() == 1){
-                countalive++;
-              }
-            }
-            if(countalive<2 || countalive>3){
-              cells[i][j].no();
-            }
-            else{
-              cells[i][j].yes();
-            }
-        }
-          if(cells[i][j].getType() == 0){
-            for(int x = 0; x<8; x++){
-              if(s[x].getType() == 1){
-                countalive++;
-              }
-            }
-            if(countalive==3){
-              cells[i][j].yes();
-            }
-            else{
-              cells[i][j].no();
-            }
-          }
-          }
-  }
+
+void keyPressed(){
+  world.update();
 }
-for(int i = 1; i<cells.length-1; i++){
-      for(int j = 1; j<cells[i].length-1; j++){
-        if(cells[i][j].getl()){
-          cells[i][j].revive();
-        }
-        else{
-          cells[i][j].kill();
-        }
-      }
-}
-}
+
 class Shape {
   private int type;
   private boolean live;
@@ -121,4 +55,77 @@ class Shape {
     rect(2, 2, cellSize-4, cellSize-4);
   }
 }
+
+class World {
+  private Shape[][] cells;
+  public World(int rows, int cols) {
+    cells = new Shape[rows][cols];
+    for(int i = 0; i<cells.length; i++){
+      for(int j = 0; j<cells[i].length; j++){
+        cells[i][j] = new Shape();
+        cells[i][j].kill();
+      }
+    }
+  }
+  public Shape[][] getCells(){
+    return cells;
+  }
+  public void show() {
+    for(int i = 0; i<cells.length; i++){
+      for(int j = 0; j<cells[i].length; j++){
+        if(cells[i][j]!=null){
+          pushMatrix();
+          translate(i*cellSize, j*cellSize);
+          cells[i][j].show();
+          popMatrix();
+          }
+      }
+    }
+  }
+  public void update(){
+    for(int i = 1; i<cells.length-1; i++){
+      for(int j = 1; j<cells[i].length-1; j++){
+        int countalive = 0;
+        if(cells[i][j]!=null){
+          Shape[] s = {cells[i-1][j-1], cells[i-1][j], cells[i-1][j+1], cells[i][j-1], cells[i][j+1], cells[i+1][j-1], cells[i+1][j], cells[i+1][j+1]};
+          if(cells[i][j].getType() == 1){
+            for(int x = 0; x<8; x++){
+              if(s[x].getType() == 1){
+                countalive++;
+              }
+            }
+            if(countalive<2 || countalive>3){
+              cells[i][j].no();
+            }
+            else{
+              cells[i][j].yes();
+            }
+        }
+          if(cells[i][j].getType() == 0){
+            for(int x = 0; x<8; x++){
+              if(s[x].getType() == 1){
+                countalive++;
+              }
+            }
+            if(countalive==3){
+              cells[i][j].yes();
+            }
+            else{
+              cells[i][j].no();
+            }
+          }
+          }
+  }
+    }
+for(int i = 1; i<cells.length-1; i++){
+      for(int j = 1; j<cells[i].length-1; j++){
+        if(cells[i][j].getl()){
+          cells[i][j].revive();
+        }
+        else{
+          cells[i][j].kill();
+        }
+      }
+}
+  }
 }

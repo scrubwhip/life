@@ -4,9 +4,9 @@ void setup() {
   size(1600, 1600);
   world = new World(width/cellSize, height/cellSize);
   frameRate(60);
+  background(0);
 }
 void draw() {
-  background(0);
   world.show();
 }
 

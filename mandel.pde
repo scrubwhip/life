@@ -6,7 +6,7 @@ void setup() {
   frameRate(60);
 }
 void draw() {
-  background(256);
+  background(0);
   world.show();
   if(keyPressed){
   world.update();
